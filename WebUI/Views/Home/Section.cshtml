@@ -1,0 +1,19 @@
+﻿@using WebUI.HtmlHelpers
+@model WebUI.Models.TopicsViewModel
+@{
+    ViewBag.Title = "Topics";
+}
+<h2>@ViewBag.SectionName</h2>
+@foreach (var t in Model.Topics)
+{
+    <div class="item">
+        <h3>@Html.ActionLink(@t.name,"Topic", "Topic", new { id = @t.TopicId, page = 1 },null)</h3>
+        <h4>@t.description</h4>
+        создана @t.creation_date.ToString("d")
+        <br />
+    </div>
+}
+<div align ="right" class="pager">
+    @Html.PageLinks(Model.PagingInfo, x => Url.Action("Section", new { page = x }))
+</div>
+

@@ -1,0 +1,18 @@
+﻿@using WebUI.HtmlHelpers
+@model WebUI.Models.MessagesViewModel
+@{
+    ViewBag.Title = "Messages";
+}
+
+@foreach (var m in Model.Messages)
+{
+    <div class="item">
+        <h4>@m.User.username     @m.Creation_date.ToString("d")</h4>
+        <p>@m.Value</p>
+        <br />
+    </div>
+}
+<div align="right" class="pager">
+    @Html.PageLinks(Model.PagingInfo, x => Url.Action("Topic", new { page = x }))
+</div>
+

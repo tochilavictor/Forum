@@ -1,0 +1,15 @@
+﻿@model IEnumerable<Domain.Section>
+
+@{
+    ViewBag.Title = "4пда";
+}
+
+<h2>Форум 4пда</h2>
+@foreach (var s in Model)
+{
+    <div class="item">
+    <h3>@Html.ActionLink(@s.name,"Section",new {id=@s.SectionId,page = 1})</h3>
+    <h4>@s.description</h4>
+    </div>
+}
+
