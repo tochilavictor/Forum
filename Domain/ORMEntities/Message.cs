@@ -1,4 +1,4 @@
-namespace Domain
+namespace Domain.ORMEntities
 {
     using System;
     using System.Collections.Generic;
@@ -16,13 +16,13 @@ namespace Domain
             Message1 = new HashSet<Message>();
         }
 
-        public int MessageId { get; set; }
+        public long MessageId { get; set; }
 
         public int TopicId { get; set; }
 
         public int UserId { get; set; }
 
-        public int? ParentMessageId { get; set; }
+        public long? ParentMessageId { get; set; }
 
         [Required]
         public string Value { get; set; }

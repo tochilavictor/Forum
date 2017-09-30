@@ -1,4 +1,4 @@
-namespace Domain
+namespace Domain.ORMEntities
 {
     using System;
     using System.Collections.Generic;
@@ -13,31 +13,31 @@ namespace Domain
         public int UserId { get; set; }
 
         [StringLength(50)]
-        public string firstname { get; set; }
+        public string Firstname { get; set; }
 
         [StringLength(50)]
-        public string lastname { get; set; }
+        public string Lastname { get; set; }
 
         [StringLength(50)]
-        public string patronymic { get; set; }
+        public string Patronymic { get; set; }
 
         [StringLength(20)]
-        public string phone { get; set; }
+        public string Phone { get; set; }
 
         [StringLength(50)]
-        public string country { get; set; }
+        public string Country { get; set; }
 
         [StringLength(50)]
-        public string city { get; set; }
+        public string City { get; set; }
 
         [StringLength(50)]
-        public string adress1 { get; set; }
+        public string Adress1 { get; set; }
 
         [StringLength(10)]
-        public string adress2 { get; set; }
+        public string Adress2 { get; set; }
 
         [Column(TypeName = "date")]
-        public DateTime? birthdate { get; set; }
+        public DateTime? Birthdate { get; set; }
 
         [StringLength(250)]
         public string Describing { get; set; }

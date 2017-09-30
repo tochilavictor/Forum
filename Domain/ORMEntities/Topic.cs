@@ -1,4 +1,4 @@
-namespace Domain
+namespace Domain.ORMEntities
 {
     using System;
     using System.Collections.Generic;
@@ -23,13 +23,13 @@ namespace Domain
 
         [Required]
         [StringLength(100)]
-        public string name { get; set; }
+        public string Name { get; set; }
 
         [StringLength(250)]
-        public string description { get; set; }
+        public string Description { get; set; }
 
         [Column(TypeName = "date")]
-        public DateTime creation_date { get; set; }
+        public DateTime Creation_date { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Message> Messages { get; set; }

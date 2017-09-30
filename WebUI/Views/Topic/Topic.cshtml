@@ -1,18 +1,97 @@
 ﻿@using WebUI.HtmlHelpers
-@model WebUI.Models.MessagesViewModel
+@model WebUI.Models.MessagesViewModelWithPaging
 @{
     ViewBag.Title = "Messages";
 }
-
-@foreach (var m in Model.Messages)
-{
-    <div class="item">
-        <h4>@m.User.username     @m.Creation_date.ToString("d")</h4>
-        <p>@m.Value</p>
-        <br />
+<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+<div class="container-fluid">
+    <h1>@Model.TopicName</h1>
+    @if (User.Identity.IsAuthenticated)
+    {
+        @Html.ActionLink("Add message", "Create", "Message", new { id = Model.TopicId }, new { @class = "btn btn-default" })
+    }
+    <div class="row" style="margin-top:1em" >
+        <div class="col-sm-2" style="background-color:lightblue;">
+            <div class="text-center">
+                <h4>@ViewBag.CreatorUsername</h4>
+                <img width="235" height="235" class="img-thumbnail" src="@Url.Action("DisplayAvatar","Account", new { id = ViewBag.CreatorId })" />
+                @ViewBag.CreationDate.ToString("d")
+            </div>
+        </div>
+        <div class="col-sm-10" style="background-color:lavender;">
+            <p>@Model.TopicDescription</p>
+        </div>
     </div>
-}
-<div align="right" class="pager">
+</div>
+<br />
+<br />
+@foreach (var message in Model.Messages)
+{
+    <div class="container-fluid" style="margin-top:1em">
+        <div class="row">
+            <div class="col-sm-2" style="background-color:lightblue;">
+                <div class="text-center">
+                    <h4>@message.CreatorUsername</h4>
+                    <img width="235" height="235" class="img-thumbnail" src="@Url.Action("DisplayAvatar", "Account", new { id = message.UserId })" />
+                    @message.Creation_date.ToString()
+                </div>
+            </div>
+            <div class="col-sm-8" style="background-color:lavender;">
+                <div class="text">
+                    @message.Value
+                    <br />
+                    @if (message.Contains_pictures ?? false)
+                    {
+                        <br />
+                        <div class="container">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <button type="button" class="btn btn-default btn-xs spoiler-trigger" data-toggle="collapse">Attached pictures</button>
+                                </div>
+                                <div class="panel-collapse collapse out">
+                                    <div class="panel-body">
+                                        @foreach (var filename in message.Filenames)
+                                        {
+                                            <div class="text-center">
+                                                <a href="@Url.Action("DisplayAttachedPicture", "Message",new{id = message.Id,name = filename.Name,extension = filename.Extension})">
+                                                    <img width="500" height="500" class="img-thumbnail" src="@Url.Action("DisplayAttachedPicture", "Message",new{id = message.Id,name = filename.Name,extension = filename.Extension})" />
+                                                </a>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col-sm-2" style="background-color:lavender;">
+                <div class="text-center" style="margin-top:10em">
+                    @{
+                        if (User.Identity.Name == message.CreatorUsername)
+                        {
+                            <div class="container" align="right">
+                                @Html.ActionLink("Edit", "Edit", "Message", new { sourceid = Model.TopicId, page = Model.PagingInfo.CurrentPage, id = message.Id }, new { @class = "btn btn-default" })
+                                @Html.ActionLink("Delete", "Delete", "Message", new { sourceid = Model.TopicId, page = Model.PagingInfo.CurrentPage, id = message.Id }, new { @class = "btn btn-default" })
+                            </div>
+                        }
+                        else if (Model.UserIsModerator)
+                        {
+                            <div class="container" align="right">
+                                @Html.ActionLink("Delete", "Delete", "Message", new { sourceid = Model.TopicId, page = Model.PagingInfo.CurrentPage, id = message.Id }, new { @class = "btn btn-primary" })
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+                        }
+<div class="pager">
     @Html.PageLinks(Model.PagingInfo, x => Url.Action("Topic", new { page = x }))
 </div>
-
+<script>
+    $(".spoiler-trigger").click(function () {
+        $(this).parent().next().collapse('toggle');
+    });
+</script>

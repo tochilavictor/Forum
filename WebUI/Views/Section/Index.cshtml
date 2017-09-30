@@ -1,0 +1,27 @@
+﻿@using WebUI.HtmlHelpers
+@model IEnumerable<WebUI.Models.Entities.SectionViewModel>
+
+@{
+    ViewBag.Title = "4пда";
+}
+<h2>Kichikens Forum</h2>
+@if (User.IsInRole("Administrator"))
+{
+    @Html.ActionLink("Create New", "Create",null, new { @class = "btn btn-primary" });
+}
+@foreach (var s in Model)
+{
+    <div class="item">
+        <h3>@Html.ActionLink(@s.Name, "Section", new { id = @s.Id, page = 1 })</h3> 
+        <h4>@s.Description</h4>
+        @if (User.IsInRole("Administrator"))
+        {
+            <div class="container" align="right">
+                @Html.ActionLink("Edit", "Edit", new { id = s.Id }, new { @class = "btn btn-primary" }) 
+                @Html.ActionLink("Delete", "Delete", new { id = s.Id }, new { @class = "btn btn-primary" })
+            </div>
+        }
+
+    </div>
+}
+

@@ -1,4 +1,4 @@
-namespace Domain
+namespace Domain.ORMEntities
 {
     using System;
     using System.Collections.Generic;
@@ -21,10 +21,10 @@ namespace Domain
 
         [Required]
         [StringLength(50)]
-        public string name { get; set; }
+        public string Name { get; set; }
 
         [StringLength(250)]
-        public string description { get; set; }
+        public string Description { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SectionModerator> SectionModerators { get; set; }

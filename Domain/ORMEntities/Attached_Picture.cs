@@ -1,4 +1,4 @@
-namespace Domain
+namespace Domain.ORMEntities
 {
     using System;
     using System.Collections.Generic;

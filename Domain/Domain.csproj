@@ -53,12 +53,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\IAttachedPictureRepository.cs" />
+    <Compile Include="Abstract\IMessageRepository.cs" />
+    <Compile Include="Abstract\IProfileReposiory.cs" />
+    <Compile Include="Abstract\IRoleRepository.cs" />
+    <Compile Include="Abstract\ISectionModeratorsRepository.cs" />
     <Compile Include="Abstract\ISectionRepository.cs" />
     <Compile Include="Abstract\ITopicRepository.cs" />
+    <Compile Include="Abstract\IUserRepository.cs" />
+    <Compile Include="Concrete\AttachedPictureRepository.cs" />
+    <Compile Include="Concrete\MessageRepository.cs" />
+    <Compile Include="Concrete\ProfileRepository.cs" />
+    <Compile Include="Concrete\RoleRepository.cs" />
+    <Compile Include="Concrete\SectionModeratorsRepository.cs" />
     <Compile Include="Concrete\TopicRepository.cs" />
-    <Compile Include="Entities\IEntity.cs" />
-    <Compile Include="Entities\SectionEntity.cs" />
-    <Compile Include="Entities\TopicEntity.cs" />
+    <Compile Include="Concrete\UserRepository.cs" />
     <Compile Include="ORMEntities\Attached_Picture.cs" />
     <Compile Include="Concrete\SectionRepository.cs" />
     <Compile Include="ForumContext.cs" />
@@ -72,9 +81,9 @@
     <Compile Include="ORMEntities\User_additional_info.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

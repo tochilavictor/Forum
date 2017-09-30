@@ -1,4 +1,4 @@
-namespace Domain
+namespace Domain.ORMEntities
 {
     using System;
     using System.Collections.Generic;
@@ -23,20 +23,18 @@ namespace Domain
 
         [Required]
         [StringLength(50)]
-        public string username { get; set; }
+        public string Username { get; set; }
 
         [Required]
-        [StringLength(32)]
-        public string password { get; set; }
+        public string Password { get; set; }
 
         [Column("e-mail")]
         [Required]
         [StringLength(254)]
-        public string e_mail { get; set; }
+        public string E_mail { get; set; }
 
-        public short? reputation { get; set; }
-        public DateTime RegisterDate { get; set; }
-        public byte[] image { get; set; }
+        public short? Reputation { get; set; }
+        public byte[] Image { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Message> Messages { get; set; }

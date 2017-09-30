@@ -4,6 +4,7 @@ namespace Domain
     using System.Data.Entity;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
+    using ORMEntities;
 
     public partial class ForumContext : DbContext
     {
@@ -57,7 +58,7 @@ namespace Domain
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Topic>()
-                .Property(e => e.description)
+                .Property(e => e.Description)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Topic>()
@@ -66,12 +67,12 @@ namespace Domain
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<User>()
-                .Property(e => e.password)
+                .Property(e => e.Password)
                 .IsFixedLength()
                 .IsUnicode(false);
 
             modelBuilder.Entity<User>()
-                .Property(e => e.e_mail)
+                .Property(e => e.E_mail)
                 .IsUnicode(false);
 
             modelBuilder.Entity<User>()

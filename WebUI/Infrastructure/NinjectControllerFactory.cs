@@ -7,6 +7,8 @@ using Ninject;
 using System.Web.Routing;
 using Domain.Abstract;
 using Domain.Concrete;
+using System.Data.Entity;
+using Domain;
 
 namespace WebUI.Infrastructure
 {
@@ -32,6 +34,13 @@ namespace WebUI.Infrastructure
         {
             ninjectKernel.Bind<ISectionRepository>().To<SectionRepository>();
             ninjectKernel.Bind<ITopicRepository>().To<TopicRepository>();
+            ninjectKernel.Bind<IUserRepository>().To<UserRepository>();
+            ninjectKernel.Bind<IRoleRepository>().To<RoleRepository>();
+            ninjectKernel.Bind<IMessageRepository>().To<MessageRepository>();
+            ninjectKernel.Bind<IAttachedPictureRepository>().To<AttachedPictureRepository>();
+            ninjectKernel.Bind<ISectionModeratorsRepository>().To<SectionModeratorsRepository>();
+            ninjectKernel.Bind<IProfileReposiory>().To<ProfileRepository>();
+            ninjectKernel.Bind<DbContext>().To<ForumContext>().InSingletonScope();
         }
     }
 }

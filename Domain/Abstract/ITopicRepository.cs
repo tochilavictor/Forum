@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.ORMEntities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -14,5 +15,8 @@ namespace Domain.Abstract
         IEnumerable<Message> GetMessagesForTopicOnPage(Topic topic, int page, int pagesize);
         Topic GetByPredicate(Expression<Func<Topic, bool>> f);
         int NumberOfMessages(Topic topic);
+        void Add(Topic topic);
+        void Delete(Topic topic);
+        void Update(Topic topic);
     }
 }
