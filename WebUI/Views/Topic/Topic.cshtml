@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Messages";
 }
-<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="~/Scripts/jquery-2.1.1.min.js"></script>
 <div class="container-fluid">
     <h1>@Model.TopicName</h1>
     @{
@@ -53,6 +53,20 @@
             </div>
             <div class="col-sm-8" style="background-color:lavender;">
                 <div class="text" style="margin-top:1em">
+                    
+                      @if (User.Identity.IsAuthenticated && User.Identity.Name!=message.CreatorUsername)
+                      {
+                        <div class="container" align="right" style="margin-bottom:0.5em">
+                            @Html.ActionLink("Reply", "Create", "Message", new { id = message.TopicId, parentMessageId = message.Id }, new { @class = "btn btn-default" })
+                        </div>
+                      }
+                    @if (message.ParentMessageId.HasValue)
+                    {
+                        <div class="container" style="background-color:azure">
+                            <p><i>is reply to <b>@message.ParentMessageUsername</b></i></p>
+                            <p class="small"><i>"@message.ParentMessageValue"</i></p>
+                        </div>
+                    }
                     <p>@message.Value</p>
                     <br />
                     @if (message.Contains_pictures ?? false)
@@ -81,7 +95,7 @@
                 </div>
             </div>
             <div class="col-sm-2" style="background-color:lavender;">
-                <div class="text-center" style="margin-top:10em">
+                <div style="margin-top:10em">
                     @{
                         if (User.Identity.Name == message.CreatorUsername)
                         {

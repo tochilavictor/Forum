@@ -259,6 +259,7 @@
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Account\Top.cshtml" />
     <Content Include="Views\Topic\Top.cshtml" />
+    <Content Include="Views\Account\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Uploads\" />

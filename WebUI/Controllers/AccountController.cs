@@ -231,7 +231,10 @@ namespace WebUI.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.SectionId = new SelectList(sectionRepository.Sections, "SectionId", "Name");
+            var sectionsCanBeModerated = sectionRepository.Sections.ToList()
+                .Where(section => (user.SectionModerators.Any(x => x.SectionId == section.SectionId)) == false);
+
+            ViewBag.SectionId = new SelectList(sectionsCanBeModerated, "SectionId", "Name");
             ToModerator toModerator = new ToModerator
             {
                 UserId = user.UserId,
@@ -254,6 +257,7 @@ namespace WebUI.Controllers
             sectionModeratorsRepository.Add(entry);
             return RedirectToAction("Index");
         }
+        [Authorize(Roles = "Administrator")]
         public ActionResult Index()
         {
             var model = _repository.GetAllUsers().Select(u => new UserEditByModerator()
@@ -265,6 +269,27 @@ namespace WebUI.Controllers
                 SectionModerating = u.SectionModerators.ToList()
             }).ToList();
             return View(model);
+        }
+        [Authorize(Roles = "Administrator")]
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            User user = _repository.GetUserById(id.Value);
+            if (user == null)
+            {
+                return View("_Error");
+            }
+            return View(user.ToViewModel());
+        }
+        [HttpPost]
+        public ActionResult DeleteConfirmed(int? id)
+        {
+            User u = new User { UserId = id.Value};
+            _repository.DeleteUser(u);
+            return RedirectToAction("Index");
         }
         [AllowAnonymous]
         public ActionResult Top()

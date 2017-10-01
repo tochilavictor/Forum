@@ -28,8 +28,15 @@ namespace WebUI.Controllers
         }
         // GET: Message
         [HttpGet]
+        [Authorize]
         public ActionResult Create(int id,int? parentMessageId)
         {
+            if (parentMessageId.HasValue)
+            {
+                var parentMessage = messageRepository.GetById(parentMessageId.Value);
+                if (parentMessage == null) return View("_Error");
+                return View(new MessageViewModel { TopicId = id , ParentMessageId = parentMessageId.Value});
+            } 
             return View(new MessageViewModel { TopicId = id });
         }
         [HttpPost]
@@ -75,11 +82,12 @@ namespace WebUI.Controllers
             Attached_Picture picture = pictureRepository.GetByPrimaryKey(id.Value, filename);
             if (picture == null)
             {
-                return HttpNotFound();
+                return View("_Error");
             }
             return File(picture.Picture, "image/jpeg");
         }
         [HttpGet]
+        [Authorize]
         public ActionResult Edit(int sourceid,int page, long? id)
         {
             if (id == null)
@@ -89,8 +97,13 @@ namespace WebUI.Controllers
             Message message = messageRepository.GetById(id.Value);
             if (message == null)
             {
-                return HttpNotFound();
+                return View("_Error");
             }
+            User currentUser = userRepository.GetUserByUsername(User.Identity.Name);
+            if (message.UserId!=currentUser.UserId)
+            {
+                return RedirectToAction("Login", "Account", null);
+            };
             return View(new MessageEditModel { Id = message.MessageId, Value = message.Value, ToTopic = sourceid, ToPage = page });
         }
         [HttpPost]
@@ -104,6 +117,7 @@ namespace WebUI.Controllers
             }
             return View(messageEM);
         }
+        [Authorize]
         public ActionResult Delete(int sourceid, int page, long? id)
         {
             if (id == null)
@@ -113,7 +127,15 @@ namespace WebUI.Controllers
             Message message = messageRepository.GetById(id.Value);
             if (message == null)
             {
-                return HttpNotFound();
+                return View("_Error");
+            }
+            if (!User.IsInRole("Administrator"))
+            {
+                User currentUser = userRepository.GetUserByUsername(User.Identity.Name);
+                if (!userRepository.IsModeratorOfSection(currentUser, message.Topic.Section) && message.UserId != currentUser.UserId)
+                {
+                    return RedirectToAction("Login", "Account", null);
+                }
             }
             return View(new MessageEditModel { Id = message.MessageId,
                 Value = message.Value,

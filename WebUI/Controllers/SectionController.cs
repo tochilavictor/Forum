@@ -60,6 +60,7 @@ namespace WebUI.Controllers
             return View(vm);
         }
         [HttpGet]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Create()
         {
             return View();
@@ -75,7 +76,8 @@ namespace WebUI.Controllers
             }
             return View(sectionvm);
         }
-
+        [HttpGet]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit(byte? id)
         {
             if (id == null)
@@ -102,6 +104,7 @@ namespace WebUI.Controllers
             return View(section);
         }
         [HttpGet]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Delete(byte? id)
         {
             if (id == null)

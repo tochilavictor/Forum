@@ -71,6 +71,11 @@ namespace WebUI.Infrastructure
                 messagevm.Filenames = message.Attached_Picture
                     .Select(x=>new FullFileName(x.Name.Substring(0, x.Name.IndexOf('.')),x.Name.Substring(x.Name.IndexOf('.') + 1)));
             }
+            if(messagevm.ParentMessageId.HasValue)
+            {
+                messagevm.ParentMessageValue = message.Message2.Value;
+                messagevm.ParentMessageUsername = message.Message2.User.Username;
+            }
             return messagevm;
         }
         public static Message ToOrm(this MessageViewModel messagevm)

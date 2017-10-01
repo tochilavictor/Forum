@@ -28,7 +28,7 @@ namespace WebUI.Controllers
         {
             Topic t = repository.GetById(id);
             if (t == null) return View("_Error");
-
+            var a = repository.GetMessagesForTopicOnPage(t, page, PagingConfig.Messages_per_page);
             IEnumerable<MessageViewModel> messages = repository.GetMessagesForTopicOnPage(t, page, PagingConfig.Messages_per_page).Select(x=>x.ToViewModel());
 
             ViewBag.CreatorUsername = t.User.Username;
@@ -66,6 +66,7 @@ namespace WebUI.Controllers
             return View(vm);
         }
         [HttpGet]
+        [Authorize]
         public ActionResult Create(byte sectionid)
         {
             return View();
@@ -88,6 +89,7 @@ namespace WebUI.Controllers
             return View(topic);
         }
         [HttpGet]
+        [Authorize(Roles = "Moderator,Administrator")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -98,6 +100,14 @@ namespace WebUI.Controllers
             if (topic == null)
             {
                 return View("_Error");
+            }
+            if (!User.IsInRole("Administrator"))
+            {
+                User currentUser = userRepository.GetUserByUsername(User.Identity.Name);
+                if (!userRepository.IsModeratorOfSection(currentUser, topic.Section))
+                {
+                    return RedirectToAction("Login", "Account", null);
+                };
             }
             ViewBag.SectionId = new SelectList(sectionsRepository.Sections, "SectionId", "Name", topic.SectionId);
             return View(topic.ToViewModel());
@@ -115,6 +125,7 @@ namespace WebUI.Controllers
             return View(topic);
         }
         [HttpGet]
+        [Authorize(Roles = "Moderator,Administrator")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -125,6 +136,14 @@ namespace WebUI.Controllers
             if (topic == null)
             {
                 return View("_Error");
+            }
+            if (!User.IsInRole("Administrator"))
+            {
+                User currentUser = userRepository.GetUserByUsername(User.Identity.Name);
+                if (!userRepository.IsModeratorOfSection(currentUser, topic.Section))
+                {
+                    return RedirectToAction("Login", "Account", null);
+                };
             }
             return View(topic.ToViewModel());
         }

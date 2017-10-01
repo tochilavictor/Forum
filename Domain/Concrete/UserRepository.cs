@@ -46,7 +46,7 @@ namespace Domain.Concrete
                 throw new ArgumentException
                     ($"User with Id = {user.UserId} does not exists");
 
-            profileRepository.Delete(user.User_additional_info);
+            profileRepository.Delete(userToDelete.User_additional_info);
             foreach (var message in userToDelete.Messages.ToList())
             {
                 messageRepository.Delete(message);

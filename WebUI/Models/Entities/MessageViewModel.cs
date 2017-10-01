@@ -14,6 +14,8 @@ namespace WebUI.Models.Entities
         public int UserId { get; set; }
         public string CreatorUsername { get; set; }
         public long? ParentMessageId { get; set; }
+        public string ParentMessageUsername { get; set; }
+        public string ParentMessageValue { get; set; }
         [Required]
         public string Value { get; set; }
         public DateTime Creation_date { get; set; }
