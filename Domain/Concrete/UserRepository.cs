@@ -34,14 +34,8 @@ namespace Domain.Concrete
         {
             if (user == null) throw new ArgumentNullException();
             ctx.Set<User>().Add(user);
-            try
-            {
-                ctx.SaveChanges();
-            }
-            catch(DbEntityValidationException ex)
-            {
-                var c = ex.InnerException;
-            }
+            ctx.Set<User_additional_info>().Add(new User_additional_info { UserId = user.UserId });
+            ctx.SaveChanges();
         }
 
         public void DeleteUser(User user)

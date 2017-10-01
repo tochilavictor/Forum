@@ -14,6 +14,7 @@ namespace WebUI.Infrastructure
     {
         public override void Load()
         {
+            Bind<DbContext>().To<ForumContext>().InSingletonScope();
             Bind<ISectionRepository>().To<SectionRepository>();
             Bind<ITopicRepository>().To<TopicRepository>();
             Bind<IUserRepository>().To<UserRepository>();
@@ -22,7 +23,6 @@ namespace WebUI.Infrastructure
             Bind<IAttachedPictureRepository>().To<AttachedPictureRepository>();
             Bind<ISectionModeratorsRepository>().To<SectionModeratorsRepository>();
             Bind<IProfileReposiory>().To<ProfileRepository>();
-            Bind<DbContext>().To<ForumContext>().InSingletonScope();
         }
     }
 }

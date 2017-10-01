@@ -11,9 +11,11 @@ namespace Domain.Concrete
     public class TopicRepository : ITopicRepository
     {
         private DbContext ctx;
-        public TopicRepository(DbContext dbcontext)
+        private IMessageRepository messageRepository;
+        public TopicRepository(DbContext dbcontext,IMessageRepository messageRepository)
         {
             ctx = dbcontext;
+            this.messageRepository = messageRepository;
         }
         public IQueryable<Topic> Topics
         {
@@ -40,6 +42,10 @@ namespace Domain.Concrete
                 throw new ArgumentException
                     ($"Topic with Id = {topic.TopicId} does not exists");
 
+            foreach (var message in topicToDelete.Messages.ToList())
+            {
+                messageRepository.Delete(message);
+            }
             ctx.Set<Topic>().Remove(topicToDelete);
             ctx.Entry(topicToDelete).State = EntityState.Deleted;
             ctx.SaveChanges();

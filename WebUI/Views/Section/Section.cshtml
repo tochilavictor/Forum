@@ -4,10 +4,20 @@
     ViewBag.Title = "Topics";
 }
 <h2>@ViewBag.SectionName</h2>
-@if (User.Identity.IsAuthenticated)
-{
-    @Html.ActionLink("Create new topic", "Create", "Topic", new { sectionid = ViewBag.SectionId }, null)
+@{ 
+    if (User.Identity.IsAuthenticated)
+    {
+        @Html.ActionLink("Create new topic", "Create", "Topic", new { sectionid = ViewBag.SectionId }, new { @class = "btn btn-default" })
+    }
+    else
+    {
+        <h6>
+            @Html.ActionLink("Create new topic", "Create", "Topic", new { sectionid = ViewBag.SectionId }, new { @class = "btn btn-default disabled" })
+            <b style="color:red">Sign Up or Login to add message</b>
+        </h6>
+    }
 }
+
 @foreach (var t in Model.Topics)
 {
     <div class="item">
@@ -15,7 +25,10 @@
         created by @t.CreatorUsername on @t.CreationDate.ToString("d")
         @if (Model.UserIsModerator)
         {
-            @Html.ActionLink("Edit", "Edit", "Topic", new { id = t.Id }, null) @Html.ActionLink("Delete", "Delete", "Topic", new { id = t.Id }, null)
+            <div class="container" align="right">
+                @Html.ActionLink("Edit", "Edit", "Topic", new { id = t.Id }, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Delete", "Delete", "Topic", new { id = t.Id }, new { @class = "btn btn-primary" })
+            </div>  
         }
         <br />
     </div>

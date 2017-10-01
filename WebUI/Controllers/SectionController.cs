@@ -28,7 +28,7 @@ namespace WebUI.Controllers
         public ActionResult Section(byte id, int page = 1)
         {
             Section s = sectionRepository.GetById(id);
-            if (s == null) return HttpNotFound();
+            if (s == null) return View("_Error");
 
             IEnumerable<TopicViewModel> topics = sectionRepository
                 .GetTopicsForSectionOnPage(s, page, PagingConfig.Topics_Per_Page)
@@ -55,7 +55,7 @@ namespace WebUI.Controllers
                 }
             }
 
-            TopicsViewModelWithPaging vm = new TopicsViewModelWithPaging { Topics = topics, PagingInfo = pi,UserIsModerator=canModerateTopics};
+            TopicsViewModelWithPaging vm = new TopicsViewModelWithPaging { Topics = topics, PagingInfo = pi, UserIsModerator = canModerateTopics };
 
             return View(vm);
         }
@@ -85,7 +85,7 @@ namespace WebUI.Controllers
             Section section = sectionRepository.GetById(id.Value);
             if (section == null)
             {
-                return HttpNotFound();
+                return View("_Error");
             }
             return View(section.ToViewModel());
         }
@@ -111,7 +111,7 @@ namespace WebUI.Controllers
             Section section = sectionRepository.GetById(id.Value);
             if (section == null)
             {
-                return HttpNotFound();
+                return View("_Error");
             }
             return View(section.ToViewModel());
         }

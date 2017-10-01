@@ -183,7 +183,10 @@
     <Compile Include="Models\PagingInfo.cs" />
     <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Models\Entities\SectionViewModel.cs" />
+    <Compile Include="Models\ToModerator.cs" />
     <Compile Include="Models\TopicsViewModelWithPaging.cs" />
+    <Compile Include="Models\TopTopicsViewModel.cs" />
+    <Compile Include="Models\UserEditByModerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\CustomMembershipProvider.cs" />
     <Compile Include="Providers\CustomRoleProvider.cs" />
@@ -193,6 +196,7 @@
     <Content Include="App_Data\Forum_log.ldf">
       <DependentUpon>Forum.mdf</DependentUpon>
     </Content>
+    <Content Include="Content\404.jpg" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\noavatar.jpg" />
@@ -207,11 +211,13 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\App.config" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-2.1.1.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -232,7 +238,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Section\Index.cshtml" />
-    <Content Include="Views\Topic\Index.cshtml" />
     <Content Include="Views\Section\Section.cshtml" />
     <Content Include="Views\Topic\Topic.cshtml" />
     <Content Include="Views\Shared\_Layout2.cshtml" />
@@ -250,6 +255,10 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Account\Account.cshtml" />
+    <Content Include="Views\Account\GrantModeratorRights.cshtml" />
+    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Account\Top.cshtml" />
+    <Content Include="Views\Topic\Top.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Uploads\" />

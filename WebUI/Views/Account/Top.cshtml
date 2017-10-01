@@ -1,0 +1,15 @@
+﻿@model IEnumerable<Domain.ORMEntities.User>
+
+<div id="searchresults">
+    <ol>
+        @foreach (var item in Model)
+        {
+            <li>
+                @Html.ActionLink(@item.Username, "Account", new { username = item.Username })
+                <br />
+                reputation: @item.Reputation
+            </li>
+        }
+    </ol>
+
+</div>

@@ -9,7 +9,7 @@
 </head>
 <body>
     <div id="header">
-        <div class="title">SPORTS STORE</div>
+        <div class="title">forum</div>
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
@@ -18,11 +18,10 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    @Html.ActionLink("Authentication Sample", "About", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                    @Html.ActionLink("Kitty Forum", "Index", "Section",null, new { @class = "navbar-brand" })
                 </div>
                 <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Home", "About", "Home")</li>
+                    <ul class="nav navbar-nav navbar-right">
                         @Html.Partial("_LoginPartial")
                     </ul>
                 </div>
@@ -31,13 +30,31 @@
     </div>
     
     <div id="categories">
-        Hottest disscussions
+        <div style="margin-top:1em;margin-left:1em;">
+            @Ajax.ActionLink("Top users","top",new {controller="Account" },
+           new AjaxOptions
+           {
+               UpdateTargetId = "topusers"
+           })
+        </div>
+        <div id="topusers" style="margin-top:1em;">
+        </div>
+        <div style="margin-top:1em;margin-left:1em;">
+            @Ajax.ActionLink("Hottest discussions", "top", new { controller = "Topic" },
+           new AjaxOptions
+           {
+               UpdateTargetId = "topdiscussions"
+           })
+        </div>
+        <div id="topdiscussions" style="margin-top:1em;">
+        </div>
     </div>
     <div id="content">
         @RenderBody()
     </div>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+        @RenderSection("scripts", required: false)
 </body>
 </html>

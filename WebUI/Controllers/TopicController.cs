@@ -24,15 +24,10 @@ namespace WebUI.Controllers
             this.sectionsRepository = sectionsRepository;
             this.userRepository = userRepository;
         }
-        public ActionResult Try()
-        {
-            User.IsInRole("User");
-            return Content($"{User.IsInRole("User")}");
-        }
         public ActionResult Topic(int id, int page = 1)
         {
             Topic t = repository.GetById(id);
-            if (t == null) return HttpNotFound();
+            if (t == null) return View("_Error");
 
             IEnumerable<MessageViewModel> messages = repository.GetMessagesForTopicOnPage(t, page, PagingConfig.Messages_per_page).Select(x=>x.ToViewModel());
 
@@ -87,7 +82,7 @@ namespace WebUI.Controllers
                 repository.Add(topic.ToOrm());
                 int addedTopicId = repository.Topics
                     .Where(x => x.Name==topic.Name && x.CreatorId==topic.CreatorId)
-                    .ToList().OrderBy(x=>x.TopicId).Last().TopicId;
+                    .ToList().OrderBy(x=>x.Creation_date).Last().TopicId;
                 return RedirectToRoute(new { controller = "Topic", Action = "Topic" , id = addedTopicId, page =1});
             }
             return View(topic);
@@ -102,7 +97,7 @@ namespace WebUI.Controllers
             Topic topic = repository.GetById(id.Value);
             if (topic == null)
             {
-                return HttpNotFound();
+                return View("_Error");
             }
             ViewBag.SectionId = new SelectList(sectionsRepository.Sections, "SectionId", "Name", topic.SectionId);
             return View(topic.ToViewModel());
@@ -129,7 +124,7 @@ namespace WebUI.Controllers
             Topic topic = repository.GetById(id.Value);
             if (topic == null)
             {
-                return HttpNotFound();
+                return View("_Error");
             }
             return View(topic.ToViewModel());
         }
@@ -139,6 +134,17 @@ namespace WebUI.Controllers
             Topic s = new Topic { TopicId = id.Value };
             repository.Delete(s);
             return RedirectToRoute(new { controller = "Section", Action = "Index" });
+        }
+        public ActionResult Top()
+        {
+            var topics = repository.Topics.OrderByDescending(u => u.Messages.Count).Take(5);
+            var model = topics.Select(t => new TopTopicsViewModel
+            {
+                Id = t.TopicId,
+                Name = t.Name,
+                NumberOfMessages = t.Messages.Count()
+            });
+            return PartialView(model);
         }
     }
 }

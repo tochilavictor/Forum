@@ -4,13 +4,21 @@
     ViewBag.Title = Model.Username;
 }
 <h3> @Model.Username profile</h3>
+@{ 
+    if (User.IsInRole("Administrator"))
+    {
+        @Html.ActionLink("Grant moderator rights", "GrantModeratorRights",new {id= Model.Id})
+    }
+}
+<div style="margin-bottom:2em;margin-left:6em;">
+    <img width="180" height="180" class="img-thumbnail" src="@Url.Action("DisplayAvatar","Account", new { id = Model.Id })" />
+</div>
 <div>
     <hr />
-    <dl class="dl-horizontal">
+    <dl class="dl-horizontal">    
         <dt>
             @Html.DisplayNameFor(model => model.Email)
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.Email)
         </dd>

@@ -13,9 +13,12 @@ namespace Domain.Concrete
     public class MessageRepository : IMessageRepository
     {
         private DbContext ctx;
-        public MessageRepository(DbContext dbcontext)
+        private IAttachedPictureRepository attachedPictureRepository;
+        public MessageRepository(DbContext dbcontext,IAttachedPictureRepository attachedPictureRepository)
         {
             ctx = dbcontext;
+            this.attachedPictureRepository = attachedPictureRepository;
+            
         }
         public IQueryable<Message> Messages
         {
@@ -42,13 +45,10 @@ namespace Domain.Concrete
                 throw new ArgumentException
                     ($"Message with Id = {message.MessageId} does not exists");
 
-            //if (topicRepository == null) throw new ArgumentException
-            //        ($"Add reference to {nameof(ITopicRepository)} if you want update related connections");
-
-            //foreach (var topic in sectionToDelete.Topics.ToList())
-            //{
-            //    topicRepository.Delete(topic);
-            //}
+            foreach (var img in messageToDelete.Attached_Picture.ToList())
+            {
+                attachedPictureRepository.Delete(img);
+            }
             ctx.Set<Message>().Remove(messageToDelete);
             ctx.SaveChanges();
         }

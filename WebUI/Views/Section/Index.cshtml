@@ -2,9 +2,9 @@
 @model IEnumerable<WebUI.Models.Entities.SectionViewModel>
 
 @{
-    ViewBag.Title = "4пда";
+    ViewBag.Title = "Kitty";
 }
-<h2>Kichikens Forum</h2>
+<h2>Kitty Forum</h2>
 @if (User.IsInRole("Administrator"))
 {
     @Html.ActionLink("Create New", "Create",null, new { @class = "btn btn-primary" });

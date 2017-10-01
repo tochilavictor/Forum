@@ -10,11 +10,13 @@ namespace Domain.Concrete
 {
     public class SectionRepository : ISectionRepository
     {
-        private ITopicRepository topicRepository;
         private DbContext ctx;
-        public SectionRepository(DbContext dbcontext,ITopicRepository topicRep)
+        private ITopicRepository topicRepository;
+        private ISectionModeratorsRepository sectionModeratorsRepository;
+        public SectionRepository(DbContext dbcontext,ITopicRepository topicRep,ISectionModeratorsRepository sectionModeratorsRepository)
         {
             topicRepository = topicRep;
+            this.sectionModeratorsRepository = sectionModeratorsRepository;
             ctx = dbcontext;
         }
         public IQueryable<Section> Sections
@@ -40,12 +42,13 @@ namespace Domain.Concrete
                 throw new ArgumentException
                     ($"Section with Id = {section.SectionId} does not exists");
 
-            if (topicRepository == null) throw new ArgumentException
-                    ($"Add reference to {nameof(ITopicRepository)} if you want update related connections");
-
             foreach (var topic in sectionToDelete.Topics.ToList())
             {
                 topicRepository.Delete(topic);
+            }
+            foreach (var entry in sectionToDelete.SectionModerators.ToList())
+            {
+                sectionModeratorsRepository.Delete(entry);
             }
             ctx.Set<Section>().Remove(sectionToDelete);
             ctx.SaveChanges();

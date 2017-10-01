@@ -1,0 +1,15 @@
+﻿@model IEnumerable<WebUI.Models.TopTopicsViewModel>
+
+<div id="searchresults">
+    <ol>
+        @foreach (var item in Model)
+        {
+            <li>
+                @Html.ActionLink(@item.Name,"Topic", new {id=item.Id })
+                <br />
+                messages : @item.NumberOfMessages
+            </li>
+        }
+    </ol>
+
+</div>

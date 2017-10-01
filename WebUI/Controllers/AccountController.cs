@@ -22,11 +22,16 @@ namespace WebUI.Controllers
     {
         private readonly IUserRepository _repository;
         private readonly IProfileReposiory profileReposiory;
-
-        public AccountController(IUserRepository repository,IProfileReposiory profileReposiory)
+        private readonly ISectionRepository sectionRepository;
+        private readonly ISectionModeratorsRepository sectionModeratorsRepository;
+        private readonly IRoleRepository roleRepository;
+        public AccountController(IUserRepository repository,IProfileReposiory profileReposiory, ISectionRepository sectionRepository,ISectionModeratorsRepository sectionModeratorsRepository,IRoleRepository roleRepository)
         {
             this._repository = repository;
             this.profileReposiory = profileReposiory;
+            this.sectionRepository = sectionRepository;
+            this.sectionModeratorsRepository = sectionModeratorsRepository;
+            this.roleRepository = roleRepository;
         }
 
         [AllowAnonymous]
@@ -115,7 +120,7 @@ namespace WebUI.Controllers
 
                 if (membershipUser != null)
                 {
-                    FormsAuthentication.SetAuthCookie(viewModel.Email, false);
+                    FormsAuthentication.SetAuthCookie(viewModel.Username, false);
                     return RedirectToAction("Index", "Section");
                 }
                 else
@@ -157,7 +162,7 @@ namespace WebUI.Controllers
         {
             return PartialView("_LoginPartial");
         }
-
+        [AllowAnonymous]
         public ActionResult Account(string username)
         {
             if (username == null)
@@ -195,6 +200,7 @@ namespace WebUI.Controllers
             }
             return View(uservm);
         }
+        [AllowAnonymous]
         public ActionResult DisplayAvatar(int? id)
         {
             if (id == null)
@@ -212,6 +218,59 @@ namespace WebUI.Controllers
                 return File(file_path, "image/jpeg");
             }
             return File(user.Image, "image/jpeg");
+        }
+        [Authorize(Roles = "Administrator")]
+        public ActionResult GrantModeratorRights(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            User user = _repository.GetUserById(id.Value);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.SectionId = new SelectList(sectionRepository.Sections, "SectionId", "Name");
+            ToModerator toModerator = new ToModerator
+            {
+                UserId = user.UserId,
+                Username = user.Username
+            };
+            return View(toModerator);
+        }
+        [HttpPost]
+        public ActionResult GrantModeratorRights(ToModerator toModerator)
+        {
+            var entry = new SectionModerator
+            {
+                UserId = toModerator.UserId,
+                SectionId = toModerator.SectionId,
+                DateGranted = DateTime.Now
+            };
+            User user = _repository.GetUserById(toModerator.UserId);
+            user.RoleId = roleRepository.GetAllRoles().Single(x => x.Name == "Moderator").RoleId;
+            _repository.UpdateUser(user);
+            sectionModeratorsRepository.Add(entry);
+            return RedirectToAction("Index");
+        }
+        public ActionResult Index()
+        {
+            var model = _repository.GetAllUsers().Select(u => new UserEditByModerator()
+            {
+                UserId = u.UserId,
+                Username = u.Username,
+                RoleName = u.Role.Name,
+                Reputation = u.Reputation ?? 0,
+                SectionModerating = u.SectionModerators.ToList()
+            }).ToList();
+            return View(model);
+        }
+        [AllowAnonymous]
+        public ActionResult Top()
+        {
+            var model = _repository.GetAllUsers().OrderByDescending(u => u.Reputation).Take(5);
+            return PartialView(model);
         }
     }
 }

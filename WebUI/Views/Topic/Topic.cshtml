@@ -6,20 +6,33 @@
 <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
 <div class="container-fluid">
     <h1>@Model.TopicName</h1>
-    @if (User.Identity.IsAuthenticated)
-    {
-        @Html.ActionLink("Add message", "Create", "Message", new { id = Model.TopicId }, new { @class = "btn btn-default" })
+    @{
+        if (User.Identity.IsAuthenticated)
+        {
+            @Html.ActionLink("Add message", "Create", "Message", new { id = Model.TopicId }, new { @class = "btn btn-default" })
+        }
+        else
+        {
+            <h6>
+                @Html.ActionLink("Add message", "Create", "Message", new { id = Model.TopicId }, new { @class = "btn btn-default disabled" })
+                <b style="color:red">Sign Up or Login to add message</b>
+            </h6>
+        }
     }
     <div class="row" style="margin-top:1em" >
         <div class="col-sm-2" style="background-color:lightblue;">
             <div class="text-center">
-                <h4>@ViewBag.CreatorUsername</h4>
-                <img width="235" height="235" class="img-thumbnail" src="@Url.Action("DisplayAvatar","Account", new { id = ViewBag.CreatorId })" />
+                <a href=@Url.Action("Account", "Account", new {username= @ViewBag.CreatorUsername })>
+                    <h4>@ViewBag.CreatorUsername</h4>
+                    <img width="180" height="180" class="img-thumbnail" src="@Url.Action("DisplayAvatar","Account", new { id = ViewBag.CreatorId })" />
+                </a>  
                 @ViewBag.CreationDate.ToString("d")
             </div>
         </div>
-        <div class="col-sm-10" style="background-color:lavender;">
-            <p>@Model.TopicDescription</p>
+        <div class="col-sm-10" style="background-color:lavender">
+            <div style="margin-top:1em">
+                <p>@Model.TopicDescription</p>
+            </div> 
         </div>
     </div>
 </div>
@@ -31,14 +44,16 @@
         <div class="row">
             <div class="col-sm-2" style="background-color:lightblue;">
                 <div class="text-center">
-                    <h4>@message.CreatorUsername</h4>
-                    <img width="235" height="235" class="img-thumbnail" src="@Url.Action("DisplayAvatar", "Account", new { id = message.UserId })" />
+                    <a href=@Url.Action("Account", "Account", new {username= message.CreatorUsername })>
+                        <h4>@message.CreatorUsername</h4>
+                        <img width="150" height="150" class="img-thumbnail" src="@Url.Action("DisplayAvatar", "Account", new { id = message.UserId })" />
+                    </a>                    
                     @message.Creation_date.ToString()
                 </div>
             </div>
             <div class="col-sm-8" style="background-color:lavender;">
-                <div class="text">
-                    @message.Value
+                <div class="text" style="margin-top:1em">
+                    <p>@message.Value</p>
                     <br />
                     @if (message.Contains_pictures ?? false)
                     {
@@ -90,6 +105,9 @@
 <div class="pager">
     @Html.PageLinks(Model.PagingInfo, x => Url.Action("Topic", new { page = x }))
 </div>
+@*@section Scripts {
+    @Scripts.Render("~/bundles/jquery")
+}*@
 <script>
     $(".spoiler-trigger").click(function () {
         $(this).parent().next().collapse('toggle');
