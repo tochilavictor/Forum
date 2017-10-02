@@ -28,8 +28,9 @@ namespace WebUI.Controllers
         {
             Topic t = repository.GetById(id);
             if (t == null) return View("_Error");
-            var a = repository.GetMessagesForTopicOnPage(t, page, PagingConfig.Messages_per_page);
-            IEnumerable<MessageViewModel> messages = repository.GetMessagesForTopicOnPage(t, page, PagingConfig.Messages_per_page).Select(x=>x.ToViewModel());
+            IEnumerable<MessageViewModel> messages = repository
+                .GetMessagesForTopicOnPage(t, page, PagingConfig.Messages_per_page)
+                .Select(x=>x.ToViewModel());
 
             ViewBag.CreatorUsername = t.User.Username;
             ViewBag.CreatorId = t.User.UserId;
@@ -78,11 +79,13 @@ namespace WebUI.Controllers
 
             if (ModelState.IsValid)
             {
-                topic.CreatorId = userRepository.GetUserByUsername(User.Identity.Name).UserId;
+                topic.CreatorId = userRepository
+                    .GetUserByUsername(User.Identity.Name)
+                    .UserId;
                 topic.CreationDate = DateTime.Now;
                 repository.Add(topic.ToOrm());
                 int addedTopicId = repository.Topics
-                    .Where(x => x.Name==topic.Name && x.CreatorId==topic.CreatorId)
+                    .Where(x => x.Name == topic.Name && x.CreatorId == topic.CreatorId)
                     .ToList().OrderBy(x=>x.Creation_date).Last().TopicId;
                 return RedirectToRoute(new { controller = "Topic", Action = "Topic" , id = addedTopicId, page =1});
             }

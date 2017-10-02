@@ -171,7 +171,7 @@
     <Compile Include="Infrastructure\CaptchaImage.cs" />
     <Compile Include="Infrastructure\DependencyModule.cs" />
     <Compile Include="Infrastructure\Mappers.cs" />
-    <Compile Include="Infrastructure\NinjectControllerFactory.cs" />
+    <Compile Include="HtmlHelpers\NinjectControllerFactory.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Infrastructure\PagingConfig.cs" />
     <Compile Include="Models\Entities\UserViewModel.cs" />
@@ -199,6 +199,7 @@
     <Content Include="Content\404.jpg" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\loading.gif" />
     <Content Include="Content\noavatar.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />

@@ -100,14 +100,14 @@
                         if (User.Identity.Name == message.CreatorUsername)
                         {
                             <div class="container" align="right">
-                                @Html.ActionLink("Edit", "Edit", "Message", new { sourceid = Model.TopicId, page = Model.PagingInfo.CurrentPage, id = message.Id }, new { @class = "btn btn-default" })
-                                @Html.ActionLink("Delete", "Delete", "Message", new { sourceid = Model.TopicId, page = Model.PagingInfo.CurrentPage, id = message.Id }, new { @class = "btn btn-default" })
+                                @Html.RouteLink("Edit", "withRedirect", new { controller="Message", action="Edit", sourceid = Model.TopicId, page = Model.PagingInfo.CurrentPage, id = message.Id }, new { @class = "btn btn-default" })
+                                @Html.RouteLink("Delete", "withRedirect", new { controller = "Message", action = "Delete", sourceid = Model.TopicId, page = Model.PagingInfo.CurrentPage, id = message.Id }, new { @class = "btn btn-default" })
                             </div>
                         }
                         else if (Model.UserIsModerator)
                         {
                             <div class="container" align="right">
-                                @Html.ActionLink("Delete", "Delete", "Message", new { sourceid = Model.TopicId, page = Model.PagingInfo.CurrentPage, id = message.Id }, new { @class = "btn btn-primary" })
+                                @Html.RouteLink("Delete", "withRedirect", new { controller = "Message", action = "Delete", sourceid = Model.TopicId, page = Model.PagingInfo.CurrentPage, id = message.Id }, new { @class = "btn btn-primary" })
                             </div>
                         }
                     }

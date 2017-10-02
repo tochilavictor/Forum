@@ -34,19 +34,23 @@
             @Ajax.ActionLink("Top users","top",new {controller="Account" },
            new AjaxOptions
            {
-               UpdateTargetId = "topusers"
+               UpdateTargetId = "topusers",
+               LoadingElementId = "loadingUsers"
            })
         </div>
         <div id="topusers" style="margin-top:1em;">
+            <img height="100" width="100" id="loadingUsers" src="~/Content/loading.gif" style="display:none" />
         </div>
         <div style="margin-top:1em;margin-left:1em;">
             @Ajax.ActionLink("Hottest discussions", "top", new { controller = "Topic" },
            new AjaxOptions
            {
-               UpdateTargetId = "topdiscussions"
+               UpdateTargetId = "topdiscussions",
+               LoadingElementId = "loadingDiscussions"
            })
         </div>
         <div id="topdiscussions" style="margin-top:1em;">
+            <img height="100" width="100" id="loadingDiscussions" src="~/Content/loading.gif" style="display:none"/>
         </div>
     </div>
     <div id="content">

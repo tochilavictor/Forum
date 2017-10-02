@@ -13,10 +13,12 @@ namespace WebUI.Models.Entities
         public byte Id { get; set; }
 
         [Required(ErrorMessage = "Section must have name")]
+        [StringLength(50)]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Section must have description")]
         [UIHint("MultilineText")]
+        [StringLength(250)]
         public string Description { get; set; }
         
     }
